@@ -5,7 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
-
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 class CarEvaluationClassifier:
     def __init__(self, DataFrame):
@@ -63,15 +64,45 @@ class CarEvaluationClassifier:
     def evaluate(self):
         if self.current_model is None:
             raise ValueError("No model selected. Use the 'set_model' method to select a model first.")
-        y_pred = self.current_model.predict(self.X_test)
-        accuracy = accuracy_score(self.y_test, y_pred)
-        report = classification_report(self.y_test, y_pred)
+        self.y_pred = self.current_model.predict(self.X_test)
+        accuracy = accuracy_score(self.y_test, self.y_pred)
+        report = classification_report(self.y_test, self.y_pred)
         print("Model Accuracy:", accuracy)
         print("\nClassification Report:\n", report)
 
+    def display_confusion_matrix(self):
+        """
+        Generate and display the confusion matrix.
+
+        Parameters:
+        y_true (array-like): True labels.
+        y_pred (array-like): Predicted labels.
+        """
+        self.cm = confusion_matrix(self.y_test, self.y_pred)
+        self.disp = ConfusionMatrixDisplay(confusion_matrix=self.cm)
+        self.disp.plot(cmap="Blues")
+        print("Confusion Matrix:")
+        print(self.cm)
+
+    def calculate_mse(self):
+        """
+        Calculate and print the Mean Squared Error.
+
+        Parameters:
+        y_true (array-like): True labels or values.
+        y_pred (array-like): Predicted labels or values.
+
+        Returns:
+        float: Mean Squared Error
+        """
+        mse = mean_squared_error(self.y_test, self.y_pred)
+        print(f"Mean Squared Error: {mse:.4f}")
+        return mse
+
 
 # Load the data
-data = pd.read_excel('car.xlsx', header=None)
+filepath = "E:/TH koeln_AIT/Courses/Oop/Project/Classification & Regression/Oop_Project_ML/Data/car.xlsx"
+data = pd.read_excel(filepath, header=None)
 
 # Create the classifier instance
 classifier = CarEvaluationClassifier(data)
@@ -134,3 +165,6 @@ else:
     # Train and evaluate SVC
     classifier.train()
     classifier.evaluate()
+    classifier.display_confusion_matrix()
+    classifier.calculate_mse()
+
