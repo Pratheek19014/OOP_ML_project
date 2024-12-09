@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score, StratifiedKFold
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -9,7 +9,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error, confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
-from statsmodels.stats.outliers_influence import variance_inflation_factor
+import matplotlib.pyplot as plt
 
 
 class CarEvaluationClassifier:
@@ -87,9 +87,22 @@ class CarEvaluationClassifier:
         mse = mean_squared_error(self.target_test, self.target_pred)
         print(f"Mean Squared Error: {mse:.4f}")
         return mse
+    
+    def visualization(self, data):
+        data.hist(bins=20, figsize=(10, 8), edgecolor='black')
+        plt.suptitle("Histograms for All Features", fontsize=16)
+        plt.tight_layout()  # Ensures labels and titles don't overlap
+        plt.show()
+
+        plt.figure(figsize=(8, 6))
+        plt.scatter(self.target_test, self.target_pred, alpha=0.7)
+        plt.title(f'Scatter Plot: {self.target_test} vs {self.target_pred}', fontsize=14)
+        plt.xlabel(self.target_test)
+        plt.ylabel(self.target_pred)
+        plt.show()
 
 # Load the data
-filepath = "E:/TH koeln_AIT/Courses/Oop/Project/Classification & Regression/Oop_Project_ML/Data/car.xlsx"
+filepath = "E:\TH koeln_AIT\Courses\Oop\Project\Classification & Regression\Oop_Project_ML\Data\car.xlsx"
 data = pd.read_excel(filepath, header=None)
 
 # Create the classifier instance
@@ -144,6 +157,7 @@ try:
     classifier.evaluate()
     classifier.display_confusion_matrix()
     classifier.calculate_mse()
+    classifier.visualization(data)
 
 except ValueError as e:
     print(e)
