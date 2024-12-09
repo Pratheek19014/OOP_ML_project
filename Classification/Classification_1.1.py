@@ -16,31 +16,23 @@ class CarEvaluationClassifier:
     def __init__(self, DataFrame):
         self.models = {
             "RandomForest": RandomForestClassifier(n_estimators=40),
-            "LogisticRegression": LogisticRegression(max_iter=1000),
             "SVC": SVC(),
             "kNN": KNeighborsClassifier()
         }
         self.current_model = None
         self.encoder = LabelEncoder()
-        ##self.scaler = StandardScaler()
-        ##vif_data = pd.DataFrame()
-
+        self.scaler = StandardScaler()
         # Encode all columns
         for column in DataFrame.columns:
             DataFrame[column] = DataFrame[column].astype(str)  # Convert values to strings
             DataFrame[column] = self.encoder.fit_transform(DataFrame[column])
-
         self.data = DataFrame.iloc[:, :-1]
         self.target = DataFrame.iloc[:, -1]
-        ##vif_data["feature"] = self.data.columns
-        ##vif_data["VIF"] = [variance_inflation_factor(self.data.values, i) for i in range(self.data.shape[1])]
 
     def prepare_data(self, test_size=0.2):
         self.data_train, self.data_test, self.target_train, self.target_test = train_test_split(
             self.data, self.target, test_size=test_size, random_state=42
         )
-        ##self.data_train_scaled = self.scaler.fit_transform(classifier.data_train)
-        ##self.data_test_scaled = self.scaler.transform(classifier.data_test)
 
     def set_model(self, model_name):
         if model_name in self.models:
@@ -87,7 +79,7 @@ class CarEvaluationClassifier:
         mse = mean_squared_error(self.target_test, self.target_pred)
         print(f"Mean Squared Error: {mse:.4f}")
         return mse
-    
+'''
     def visualization(self, data):
         data.hist(bins=20, figsize=(10, 8), edgecolor='black')
         plt.suptitle("Histograms for All Features", fontsize=16)
@@ -100,7 +92,7 @@ class CarEvaluationClassifier:
         plt.xlabel(self.target_test)
         plt.ylabel(self.target_pred)
         plt.show()
-
+'''
 # Load the data
 filepath = "E:\TH koeln_AIT\Courses\Oop\Project\Classification & Regression\Oop_Project_ML\Data\car.xlsx"
 data = pd.read_excel(filepath, header=None)
@@ -112,7 +104,7 @@ classifier = CarEvaluationClassifier(data)
 classifier.prepare_data()
 
 # User selects a model
-print("Available models: RandomForest, LogisticRegression, SVC, kNN")
+print("Available models: RandomForest, SVC, kNN")
 selected_model = input("Enter the model name you want to use: ")
 
 # Example Usage
@@ -123,14 +115,6 @@ try:
             "n_estimators": [50, 100, 200],
             "max_depth": [None, 10, 20],
             "random_state": [42]
-        }
-    elif selected_model == "LogisticRegression":
-        param_grid = {
-            "C": [1.0, 10.0, 100.0],
-            "penalty": ["l2", "l1", "elasticnet"],
-            "solver": ["lbfgs", "liblinear", "newton-cg"],
-            "max_iter": [2000, 5000],
-            "class_weight": [None, "balanced"]
         }
     elif selected_model == "SVC":
         param_grid = {
@@ -147,17 +131,14 @@ try:
         }
     else:
         raise ValueError("Invalid model name entered.")
-
-    # Perform hyperparameter tuning
+        # Perform hyperparameter tuning
     classifier.hyperparameter_tuning(param_grid)
-    
-
     # Train and evaluate
     classifier.train()
     classifier.evaluate()
     classifier.display_confusion_matrix()
     classifier.calculate_mse()
-    classifier.visualization(data)
+    #classifier.visualization(data)
 
 except ValueError as e:
     print(e)
