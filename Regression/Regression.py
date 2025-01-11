@@ -89,7 +89,7 @@ class regression:
 
 
 # class data2gui(regression):
-
+# Below code is only for demonstration purposes.
 
 data = regression()
 data.load_data("pH-Wert")
