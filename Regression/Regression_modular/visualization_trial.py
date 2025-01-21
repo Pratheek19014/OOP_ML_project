@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
     
@@ -109,7 +111,7 @@ def ridge_plot(data):
     
     # Customize the legend
     plt.legend(
-        fontsize=12, loc='lower right', frameon=True, fancybox=True, shadow=True, borderpad=1
+        fontsize=12, loc='center right', frameon=True, fancybox=True, shadow=True, borderpad=1
     )
     
     # Add gridlines and customize tick params
