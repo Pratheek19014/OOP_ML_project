@@ -20,7 +20,7 @@ class RegressionModels:
         self.model.fit(x_train, y_train)
         return self.model
     
-    def train_polynomial_regression(self, x_train, y_train, tune=False, param_grid=None, cv=5):
+    def train_polynomial_regression(self, x_train, y_train, tune=False, param_grid=None, cv=3):
         """
         Train or tune a Polynomial Regression model.
         Parameters:
@@ -45,7 +45,7 @@ class RegressionModels:
 
         return self.model
 
-    def train_ridge(self, x_train, y_train, tune=False, param_grid=None, cv=5):
+    def train_ridge(self, x_train, y_train, tune=False, param_grid=None, cv=3):
         """
         Train or tune a Ridge Regression model.
         Parameters:
@@ -76,7 +76,7 @@ class RegressionModels:
 
         return self.model
 
-    def train_lasso(self, x_train, y_train, tune=False, param_grid=None, cv=5):
+    def train_lasso(self, x_train, y_train, tune=False, param_grid=None, cv=3):
         """
         Train or tune a Lasso Regression model.
         Parameters:

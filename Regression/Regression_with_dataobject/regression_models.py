@@ -20,7 +20,7 @@ class RegressionModels:
         self.model.fit(dataobj['split_data']['x_train'], dataobj['split_data']['y_train'])
         return self.model
     
-    def train_polynomial_regression(self, dataobj, param_grid=None, cv=5): # x_train, y_train
+    def train_polynomial_regression(self, dataobj, param_grid=None, cv=3): # x_train, y_train
        
         estimator = Pipeline([("polynomial_features", PolynomialFeatures()),("linear_regression", LinearRegression())])
         grid_search = GridSearchCV(estimator=estimator, param_grid=param_grid, cv=cv, scoring="r2")
@@ -30,7 +30,7 @@ class RegressionModels:
 
         return self.model
 
-    def train_ridge(self, dataobj, param_grid=None, cv=5): # x_train, y_train
+    def train_ridge(self, dataobj, param_grid=None, cv=3): # x_train, y_train
                 
         ridge_pipeline = Pipeline([
         ("polynomial_features", PolynomialFeatures()),
@@ -45,7 +45,7 @@ class RegressionModels:
 
         return self.model
 
-    def train_lasso(self, dataobj, param_grid=None, cv=5): # x_train, y_train
+    def train_lasso(self, dataobj, param_grid=None, cv=3): # x_train, y_train
             
         lasso_pipeline = Pipeline([
         ("polynomial_features", PolynomialFeatures()),
